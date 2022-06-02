@@ -3,9 +3,10 @@ import axios from 'axios';
 import { IServerData } from '../utils/interfaces';
 
 const url = 'https://s3objectlambda-test.s3.us-east-1.amazonaws.com/warm/0xed5af388653567af2f388e6224dc7c4b3241c544';
+const rankUrl =
+   'https://s3objectlambda-test.s3.us-east-1.amazonaws.com/tally_ranks/0xed5af388653567af2f388e6224dc7c4b3241c544';
 
 function Home({ serverData }: { serverData: IServerData[] }) {
-   // console.log(serverData);
    return (
       <div className="py-10 px-5 flex w-full flex-col gap-3 items-center">
          {serverData.map((item: IServerData) => (
@@ -17,6 +18,7 @@ function Home({ serverData }: { serverData: IServerData[] }) {
                price={item.price}
                marketPlace={item.marketPlace}
                nature={item.nature}
+               rank={item.rank}
             />
          ))}
       </div>
@@ -27,15 +29,14 @@ export default Home;
 
 export async function getServerSideProps(context: any) {
    const { data } = await axios.get(url);
-
+   const data2 = await axios.get(rankUrl);
    const tokenIds = data.token_ids;
    const listingTimes = data.listing_times;
    const natures = data.natures;
    const prices = data.prices;
    const lastTradeEvents = data.last_trade_events;
    const marketPlaces = data.marketplaces;
-
-   // console.log(data && natures);
+   const ranks = data2.data.ranks;
 
    let newData: IServerData[] = [];
 
@@ -70,6 +71,7 @@ export async function getServerSideProps(context: any) {
             price: prices[index],
             isMakingProfit: checkIfMakingProfit(index),
             marketPlace: marketPlaces[index] === 1 ? 'opensea' : 'looksrare',
+            rank: ranks[index][0],
          };
          newData.push(newDataObj);
       });

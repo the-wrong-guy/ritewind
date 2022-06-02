@@ -6,7 +6,15 @@ import { useState } from 'react';
 
 const Divider = () => <div className="border-[.7px] border-[#00000029]" />;
 
-export default function ListingCard({ tokenId, listingTime, nature, price, isMakingProfit, marketPlace }: IServerData) {
+export default function ListingCard({
+   tokenId,
+   listingTime,
+   nature,
+   price,
+   isMakingProfit,
+   marketPlace,
+   rank,
+}: IServerData) {
    const [isHovering, setHovering] = useState<boolean>(false);
    return (
       <div
@@ -30,13 +38,19 @@ export default function ListingCard({ tokenId, listingTime, nature, price, isMak
          <div className="flex py-[7px] pl-[10px] pr-[5px] justify-between w-full">
             <div className="flex">
                <div className="relative pr-[13px] flex justify-center">
-                  <Image src={'/Shark.png'} width={53} height={53} alt="arrow-down" className="rounded-md" />
+                  <Image
+                     src={`https://img.nftnerds.ai/0xed5af388653567af2f388e6224dc7c4b3241c544_${tokenId}_96x96`}
+                     width={53}
+                     height={53}
+                     alt="arrow-down"
+                     className="rounded-md"
+                  />
                   <p className="text-white absolute z-10 bottom-0 text-[11px] font-medium leading-[16.5px]">
                      #{tokenId}
                   </p>
                </div>
                <p className="text-sm font-medium text-[rgba(255,255,255,0.5)]">
-                  Rank: <span className="text-[yellow]">450</span>
+                  Rank: <span style={{ color: nature }}>{rank}</span>
                </p>
             </div>
             <div>

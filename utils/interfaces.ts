@@ -5,4 +5,5 @@ export interface IServerData {
    price: number;
    isMakingProfit: boolean;
    marketPlace: string;
+   rank: number;
 }
